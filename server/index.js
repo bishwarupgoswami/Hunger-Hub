@@ -32,7 +32,7 @@ app.get("/", (req, res) => {
   res.json({ message: "Hunger-Hub server is running" });
 });
 
-connectDB();
+//connectDB();
 
 app.use("/api/user", userRouter);
 app.use("/api/auth", authRouter);
