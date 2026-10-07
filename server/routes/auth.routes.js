@@ -4,16 +4,18 @@ import {
   registerUserController,
   verifyEmailController,
   loginUserController,
+  logoutUserController,
 } from "../controllers/user.controller.js";
 
-const router = express.Router();
+import auth from "../middleware/auth.js";
 
-router.get("/test", (req, res) => {
-  res.json({ message: "Auth route is working" });
-});
+const router = express.Router();
 
 router.post("/register", registerUserController);
 router.post("/verify-email", verifyEmailController);
 router.post("/login", loginUserController);
+
+// Keep logout disabled for now
+// router.post("/logout", auth, logoutUserController);
 
 export default router;
