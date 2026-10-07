@@ -1,6 +1,8 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
+import userRouter from "./routes/user.route.js";
+import authRouter from "./routes/auth.routes.js";
 dotenv.config();
 
 import cookieParser from "cookie-parser";
@@ -33,5 +35,8 @@ app.get("/", (req, res) => {
 app.get("/api/auth/test", (req, res) => {
   res.json({ message: "Auth route is working" });
 });
+
+app.use("/api/user", userRouter);
+app.use("/api/auth", authRouter);
 
 export default app;
