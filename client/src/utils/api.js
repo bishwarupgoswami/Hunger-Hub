@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // Create a base URL for API requests
-const API_BASE_URL = "https://hunger-hub-server.vercel.app/api";
+const API_BASE_URL = "https://hunger-hub-fmqo.vercel.app/api";
 
 const api = axios.create({
   baseURL: API_BASE_URL,
