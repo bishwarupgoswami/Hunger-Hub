@@ -2,27 +2,23 @@ import jwt from "jsonwebtoken";
 
 const auth = async (req, res, next) => {
   try {
-    console.log("Auth middleware - Headers:", req.headers.authorization);
-    console.log("Auth middleware - Cookies:", req.cookies);
-
     const token =
-      req.cookies.accessToken || req?.headers?.authorization?.split(" ")[1];
-
-    console.log("Token extracted:", token ? "Found token" : "No token");
+      req.cookies?.accessToken ||
+      req.headers?.authorization?.split(" ")[1];
 
     if (!token) {
       return res.status(401).json({
         message: "Provide token",
+        error: true,
+        success: false,
       });
     }
 
-    console.log("Verifying token with JWT_SECRET");
-    const decode = await jwt.verify(token, process.env.JWT_SECRET);
-    console.log("Token verification successful. User ID:", decode.id);
+    const decode = jwt.verify(token, process.env.JWT_SECRET);
 
     if (!decode) {
       return res.status(401).json({
-        message: "unauthorized access",
+        message: "Unauthorized access",
         error: true,
         success: false,
       });
@@ -40,19 +36,21 @@ const auth = async (req, res, next) => {
         error: true,
         success: false,
       });
-    } else if (error.name === "TokenExpiredError") {
+    }
+
+    if (error.name === "TokenExpiredError") {
       return res.status(401).json({
         message: "Token expired",
         error: true,
         success: false,
       });
-    } else {
-      return res.status(500).json({
-        message: "Authentication error",
-        error: true,
-        success: false,
-      });
     }
+
+    return res.status(500).json({
+      message: "Authentication error",
+      error: true,
+      success: false,
+    });
   }
 };
 
